@@ -1,0 +1,74 @@
+import 'package:flutter/material.dart';
+import 'package:pglp2myportfolio/components/hobbies_view.dart';
+import 'package:pglp2myportfolio/components/hobby_card.dart';
+import 'package:pglp2myportfolio/components/portfolio_footer.dart'; 
+import 'package:pglp2myportfolio/components/portfolio_header.dart';
+import 'package:pglp2myportfolio/components/repository_view.dart';
+import '../widgets/app_drawer.dart';
+
+int opcionBody = 0;
+List<String> hobbies = [
+  'Escuchar musica',
+  'Senderismo',
+  'Estudiar economía',
+  "Videojuegos",
+  "Juegos de mesa con amigos",
+  "Jugar baloncesto",
+  "Gimnasio",
+  "Hobbie2",
+];
+
+
+
+class PortfolioScreen extends StatefulWidget {
+  const PortfolioScreen({super.key});
+
+
+  @override
+  State<PortfolioScreen> createState() => _PortfolioScreenState();
+}
+
+class _PortfolioScreenState extends State<PortfolioScreen> {
+
+  int opcionBody = 0; 
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("Daniel Rivero's Portfolio"),
+          backgroundColor: Colors.black12,
+          foregroundColor: Colors.white,
+          centerTitle: true,
+        ),
+        drawer: const AppDrawer(),
+        body: SafeArea(
+          child: Column(
+            children: [
+              ProfileSubHeader(opcionBody: opcionBody),
+              const Divider(height: 1),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  // Quitamos el 'const' de aquí porque opcionBody cambia
+                  child: opcionBody == 0
+                      ? const HobbiesView()
+                      : const RepositoryView(),
+                ),
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: CustomFooter(
+          onTabChanged: (nuevaOpcion) {
+            setState(() {
+              opcionBody = nuevaOpcion;
+            });
+          },
+        ),
+      ),
+    );
+  }
+}
