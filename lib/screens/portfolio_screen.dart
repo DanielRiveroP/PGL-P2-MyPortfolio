@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pglp2myportfolio/components/hobbies_view.dart'; // <-- Import necesario para el footer
-import 'package:pglp2myportfolio/components/hobby_card.dart'; // <-- Import necesario para el footer
-import 'package:pglp2myportfolio/components/portfolio_footer.dart'; // <-- Import necesario para el footer
-import 'package:pglp2myportfolio/components/portfolio_header.dart'; // <-- Import necesario para el footer
+import 'package:pglp2myportfolio/components/hobbies_view.dart';
+import 'package:pglp2myportfolio/components/hobby_card.dart';
+import 'package:pglp2myportfolio/components/portfolio_footer.dart'; 
+import 'package:pglp2myportfolio/components/portfolio_header.dart'; 
+import '../widgets/app_drawer.dart';
 
 int opcionBody = 0;
 List<String> hobbies = [
@@ -16,8 +17,11 @@ List<String> hobbies = [
   "Hobbie2",
 ];
 
+
+
 class PortfolioScreen extends StatefulWidget {
   const PortfolioScreen({super.key});
+
 
   @override
   State<PortfolioScreen> createState() => _PortfolioScreenState();
@@ -35,6 +39,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
           foregroundColor: Colors.white,
           centerTitle: true,
         ),
+        drawer: const AppDrawer(),
         body: SafeArea(
           child: Column(
             children: [
