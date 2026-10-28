@@ -10,14 +10,14 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF1B3B1A),
       appBar: AppBar(
         title: const Text('Sabores Canarios'),
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFF1B3B1A),
         elevation: 0,
         centerTitle: true,
         foregroundColor: Colors.white, 
       ),
-      extendBodyBehindAppBar: true,
       drawer: const AppDrawer(),
       body: Stack(
         children: [

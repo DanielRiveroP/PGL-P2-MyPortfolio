@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pglp2myportfolio/components/hobbies_view.dart';
 import 'package:pglp2myportfolio/components/hobby_card.dart';
 import 'package:pglp2myportfolio/components/portfolio_footer.dart'; 
-import 'package:pglp2myportfolio/components/portfolio_header.dart'; 
+import 'package:pglp2myportfolio/components/portfolio_header.dart';
+import 'package:pglp2myportfolio/components/repository_view.dart';
 import '../widgets/app_drawer.dart';
 
 int opcionBody = 0;
@@ -28,6 +29,9 @@ class PortfolioScreen extends StatefulWidget {
 }
 
 class _PortfolioScreenState extends State<PortfolioScreen> {
+
+  int opcionBody = 0; 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -46,10 +50,12 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               ProfileSubHeader(opcionBody: opcionBody),
               const Divider(height: 1),
               Expanded(
-                child: const Padding(
-                  padding: EdgeInsets.all(10.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
                   // Quitamos el 'const' de aquí porque opcionBody cambia
-                  child: HobbiesView(),
+                  child: opcionBody == 0
+                      ? const HobbiesView()
+                      : const RepositoryView(),
                 ),
               ),
             ],

@@ -13,23 +13,23 @@ class HobbiesView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
         child: Column(
           children: [
-            CosaRandom(textasion: hobbies[0]),
+            CosaRandom(hobbie: hobbies[0]),
             const SizedBox(height: 12),
-            CosaRandom(textasion: hobbies[1]),
+            CosaRandom(hobbie: hobbies[1]),
             const SizedBox(height: 12),
-            CosaRandom(textasion: hobbies[2]),
+            CosaRandom(hobbie: hobbies[2]),
             const SizedBox(height: 12),
-            CosaRandom(textasion: hobbies[5]), // Jugar baloncesto
+            CosaRandom(hobbie: hobbies[5]), // Jugar baloncesto
             const SizedBox(height: 12),
-            CosaRandom(textasion: hobbies[3]),
+            CosaRandom(hobbie: hobbies[3]),
             const SizedBox(height: 12),
-            CosaRandom(textasion: hobbies[6]), // Gimnasio
+            CosaRandom(hobbie: hobbies[6]), // Gimnasio
             const SizedBox(height: 12),
-            const CosaRandom(textasion: "Peliculas de mafias"),
+            const CosaRandom(hobbie: "Peliculas de mafias"),
             const SizedBox(height: 12),
-            const CosaRandom(textasion: "Conducir"),
+            const CosaRandom(hobbie: "Conducir"),
             const SizedBox(height: 12),
-            const CosaRandom(textasion: "Hobbie2")
+            const CosaRandom(hobbie: "Hobbie2")
           ],
         ),
       ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CosaRandom extends StatelessWidget {
-  final String textasion;
+  final String hobbie;
 
-  const CosaRandom({super.key, required this.textasion});
+  const CosaRandom({super.key, required this.hobbie});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class CosaRandom extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          textasion,
+          hobbie,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
