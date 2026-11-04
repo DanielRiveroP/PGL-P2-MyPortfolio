@@ -91,6 +91,15 @@ class AppDrawer extends StatelessWidget {
               isSelected: false,
               onTap: () => Navigator.pop(context),
             ),
+            _buildDrawerItem(
+              icon: Icons.storage, // O el icono que prefieras
+              title: 'CRUD de Coches',
+              isSelected: currentPath == '/crud', // O la ruta que configures
+              onTap: () {
+                Navigator.pop(context); // Cierra el menú
+                context.go('/crud');    // Navega a la pantalla CRUD (si usas go_router)
+              },
+            ),
 
             const Spacer(), // Empuja el contenido restante hacia abajo
 
