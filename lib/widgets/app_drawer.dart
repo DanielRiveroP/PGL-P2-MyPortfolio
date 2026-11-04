@@ -93,7 +93,7 @@ class AppDrawer extends StatelessWidget {
             ),
             _buildDrawerItem(
               icon: Icons.storage, // O el icono que prefieras
-              title: 'CRUD de Coches',
+              title: 'Gestión Guachinches',
               isSelected: currentPath == '/crud', // O la ruta que configures
               onTap: () {
                 Navigator.pop(context); // Cierra el menú

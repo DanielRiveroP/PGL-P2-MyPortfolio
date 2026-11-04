@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import '../models/coche.dart';
+
+import '../models/guachinche.dart';
 import '../widgets/app_drawer.dart';
+import '../widgets/guachinche_card.dart';
 
 class CrudScreen extends StatefulWidget {
   const CrudScreen({super.key});
@@ -10,47 +12,139 @@ class CrudScreen extends StatefulWidget {
 }
 
 class _CrudScreenState extends State<CrudScreen> {
-  // Lista dinámica de elementos
-  final List<Coche> _coches = [];
+  // Lista dinámica de guachinches y contador
+  final List<Guachinche> _guachinches = [];
   int _contadorId = 1;
 
   // Controladores para el formulario del Modal
-  final _marcaController = TextEditingController();
-  final _descController = TextEditingController();
-  String _categoriaSeleccionada = 'Deportivo'; // Categoría por defecto
+  final _nombreController = TextEditingController();
+  final _islaController = TextEditingController();
+  final _especialidadController = TextEditingController();
 
-  // Función para mostrar el modal (Dialog) de añadir coche (Requisito 4 y 5)
+  // Variable para la categoría seleccionada por defecto
+  String _categoriaSeleccionada = 'Tradicional';
+
   void _mostrarModalAgregar() {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Añadir Nuevo Coche'),
+          backgroundColor: const Color(
+            0xFF1B3B1A,
+          ), // Fondo verde oscuro corporativo
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: const Text(
+            'Añadir Guachinche',
+            style: TextStyle(
+              color: Color(0xFFE6D7C3),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Campo Nombre
                 TextField(
-                  controller: _marcaController,
-                  decoration: const InputDecoration(labelText: 'Marca / Nombre'),
+                  controller: _nombreController,
+                  style: const TextStyle(color: Color(0xFFE6D7C3)),
+                  decoration: InputDecoration(
+                    labelText: 'Nombre',
+                    labelStyle: const TextStyle(color: Color(0xFFE6D7C3)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFFE6D7C3)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE6D7C3),
+                        width: 2,
+                      ),
+                    ),
+                  ),
                 ),
+                const SizedBox(height: 12),
+                // Campo Isla
                 TextField(
-                  controller: _descController,
-                  decoration: const InputDecoration(labelText: 'Descripción breve'),
+                  controller: _islaController,
+                  style: const TextStyle(color: Color(0xFFE6D7C3)),
+                  decoration: InputDecoration(
+                    labelText: 'Isla (ej. Tenerife)',
+                    labelStyle: const TextStyle(color: Color(0xFFE6D7C3)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFFE6D7C3)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE6D7C3),
+                        width: 2,
+                      ),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 16),
-                // Selector de categoría (Requisito 5)
-                DropdownButtonFormField<String>(
+                const SizedBox(height: 12),
+                // Campo Especialidad
+                TextField(
+                  controller: _especialidadController,
+                  style: const TextStyle(color: Color(0xFFE6D7C3)),
+                  decoration: InputDecoration(
+                    labelText: 'Especialidad (ej. Carne cabra)',
+                    labelStyle: const TextStyle(color: Color(0xFFE6D7C3)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFFE6D7C3)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE6D7C3),
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                // Selector de Categoría corregido para evitar el error de nulos
+                DropdownButtonFormField<String?>(
                   value: _categoriaSeleccionada,
-                  items: ['Deportivo', 'SUV', 'Clásico'].map((cat) {
-                    return DropdownMenuItem(value: cat, child: Text(cat));
+                  dropdownColor: const Color(0xFF1B3B1A),
+                  style: const TextStyle(color: Color(0xFFE6D7C3)),
+                  items: ['Tradicional', 'Parrilla', 'Vino Propio'].map((cat) {
+                    return DropdownMenuItem<String>(
+                      value: cat,
+                      child: Text(
+                        cat,
+                        style: const TextStyle(color: Color(0xFFE6D7C3)),
+                      ),
+                    );
                   }).toList(),
                   onChanged: (val) {
                     setState(() {
-                      _categoriaSeleccionada = val!;
+                      _categoriaSeleccionada =
+                          val ??
+                          'Tradicional'; // Si viene null, asigna por defecto
                     });
                   },
-                  decoration: const InputDecoration(labelText: 'Categoría'),
+                  decoration: InputDecoration(
+                    labelText: 'Categoría',
+                    labelStyle: const TextStyle(color: Color(0xFFE6D7C3)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFFE6D7C3)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE6D7C3),
+                        width: 2,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -58,111 +152,110 @@ class _CrudScreenState extends State<CrudScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: Color(0xFFE6D7C3)),
+              ),
             ),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1B3B1A),
+                foregroundColor: const Color(0xFFE6D7C3),
+                side: const BorderSide(color: Color(0xFFE6D7C3)),
+              ),
               onPressed: () {
-                if (_marcaController.text.isNotEmpty) {
+                if (_nombreController.text.isNotEmpty) {
                   setState(() {
-                    _coches.add(
-                      Coche(
+                    _guachinches.add(
+                      Guachinche(
                         id: _contadorId++,
-                        marca: _marcaController.text,
-                        descripcion: _descController.text,
-                        categoria: _categoriaSeleccionada,
+                        nombre: _nombreController.text,
+                        isla: _islaController.text,
+                        especialidad: _especialidadController.text,
+                        categoria: _categoriaSeleccionada, // <--- ¡AQUÍ ESTÁ LA CATEGORÍA AÑADIDA!
                       ),
                     );
                   });
-                  _marcaController.clear();
-                  _descController.clear();
+                  _nombreController.clear();
+                  _islaController.clear();
+                  _especialidadController.clear();
                   Navigator.pop(context);
                 }
               },
-              child: const Text('Guardar'),
+              child: const Text(
+                'Guardar',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         );
       },
     );
   }
+
+  // Función para el modal de confirmación de Borrar Todo
   void _mostrarModalConfirmacionBorrarTodo() {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Borrar todo'),
-        content: const Text('¿Estás seguro de que quieres eliminar todos los coches de la lista?'),
-        actions: [
-          // Botón para cancelar (cierra el modal sin hacer nada)
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Borrar todo'),
+          content: const Text(
+            '¿Estás seguro de que quieres eliminar todos los guachinches?',
           ),
-          // Botón para confirmar el borrado
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            onPressed: () {
-              setState(() {
-                _coches.clear(); // Esto vacía la lista por completo
-              });
-              Navigator.pop(context); // Cierra el modal
-            },
-            child: const Text('Sí, borrar todo', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      );
-    },
-  );
-}
-
-
-  // Función auxiliar para retornar una imagen según la categoría (Requisito 6)
-  Widget _obtenerImagenPorCategoria(String categoria) {
-    IconData icono;
-    Color color;
-    if (categoria == 'Deportivo') {
-      icono = Icons.speed;
-      color = Colors.red;
-    } else if (categoria == 'SUV') {
-      icono = Icons.directions_car;
-      color = Colors.green;
-    } else {
-      icono = Icons.history;
-      color = Colors.amber;
-    }
-    return CircleAvatar(
-      backgroundColor: color.withOpacity(0.2),
-      child: Icon(icono, color: color),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              onPressed: () {
+                setState(() {
+                  _guachinches.clear();
+                });
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Sí, borrar todo',
+                style: TextStyle(color: Color(0xFFE6D7C3)),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF1B3B1A),
       appBar: AppBar(
-        title: const Text('CRUD de Coches'),
+        title: const Text('Gestión Guachinches'),
         backgroundColor: const Color(0xFF1B3B1A),
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
-      drawer: const AppDrawer(), // Requisito 2: Añadido al Drawer
+      drawer: const AppDrawer(),
       body: Column(
         children: [
-          // Requisito 8: Marcador que indica el número total de elementos
+          // Marcador superior y botón de Borrar todo
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             color: Colors.black12,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Texto del total de coches
                 Text(
-                  'Total de coches: ${_coches.length}',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  'Total guachinches: ${_guachinches.length}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFE6D7C3),
+                  ),
                 ),
-                
-                // Botón de borrar todo (si la lista está vacía, muestra un espacio vacío en vez del botón)
-                _coches.isEmpty
+                _guachinches.isEmpty
                     ? const SizedBox.shrink()
                     : ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
@@ -176,42 +269,46 @@ class _CrudScreenState extends State<CrudScreen> {
               ],
             ),
           ),
+          // Lista dinámica
           Expanded(
-            child: _coches.isEmpty
-                ? const Center(child: Text('No hay coches. ¡Añade uno!'))
+            child: _guachinches.isEmpty
+                ? const Center(
+                    child: Text(
+                      'No hay guachinches registrados.\n¡Añade uno abajo!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Color(0xFFE6D7C3), fontSize: 16),
+                    ),
+                  )
                 : ListView.builder(
-                    itemCount: _coches.length,
+                    itemCount: _guachinches.length,
                     itemBuilder: (context, index) {
-                      final coche = _coches[index];
-                      return Card(
-                        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        child: ListTile(
-                          // Requisito 6: Imagen o icono al lado según la categoría
-                          leading: _obtenerImagenPorCategoria(coche.categoria),
-                          title: Text(coche.marca, style: const TextStyle(fontWeight: FontWeight.bold)),
-                          subtitle: Text('${coche.descripcion}\nCategoría: ${coche.categoria}'),
-                          isThreeLine: true,
-                          // Requisito 7: Botón para ser borrado individualmente
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              setState(() {
-                                _coches.removeAt(index);
-                              });
-                            },
-                          ),
-                        ),
+                      final guachinche = _guachinches[index];
+                      return GuachincheCard(
+                        guachinche: guachinche,
+                        onDelete: () {
+                          setState(() {
+                            _guachinches.removeAt(index);
+                          });
+                        },
                       );
                     },
                   ),
           ),
         ],
       ),
-      // Botón flotante para abrir el modal de añadir
-      floatingActionButton: FloatingActionButton(
+      // Botón flotante inferior para añadir guachinche
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: _mostrarModalAgregar,
         backgroundColor: const Color(0xFF1B3B1A),
-        child: const Icon(Icons.add, color: Colors.white),
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.add),
+        label: const Text(
+          'Añadir Guachinche',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFE6D7C3),
+          ),
+        ),
       ),
     );
   }
