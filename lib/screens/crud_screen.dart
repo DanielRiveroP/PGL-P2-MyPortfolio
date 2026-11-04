@@ -85,6 +85,36 @@ class _CrudScreenState extends State<CrudScreen> {
       },
     );
   }
+  void _mostrarModalConfirmacionBorrarTodo() {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Borrar todo'),
+        content: const Text('¿Estás seguro de que quieres eliminar todos los coches de la lista?'),
+        actions: [
+          // Botón para cancelar (cierra el modal sin hacer nada)
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          // Botón para confirmar el borrado
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () {
+              setState(() {
+                _coches.clear(); // Esto vacía la lista por completo
+              });
+              Navigator.pop(context); // Cierra el modal
+            },
+            child: const Text('Sí, borrar todo', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 
   // Función auxiliar para retornar una imagen según la categoría (Requisito 6)
   Widget _obtenerImagenPorCategoria(String categoria) {
@@ -120,13 +150,30 @@ class _CrudScreenState extends State<CrudScreen> {
         children: [
           // Requisito 8: Marcador que indica el número total de elementos
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             color: Colors.black12,
-            width: double.infinity,
-            child: Text(
-              'Total de coches registrados: ${_coches.length}',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Texto del total de coches
+                Text(
+                  'Total de coches: ${_coches.length}',
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                
+                // Botón de borrar todo (si la lista está vacía, muestra un espacio vacío en vez del botón)
+                _coches.isEmpty
+                    ? const SizedBox.shrink()
+                    : ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: _mostrarModalConfirmacionBorrarTodo,
+                        icon: const Icon(Icons.delete_sweep, size: 18),
+                        label: const Text('Borrar todo'),
+                      ),
+              ],
             ),
           ),
           Expanded(
