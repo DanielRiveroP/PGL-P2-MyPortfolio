@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../models/guachinche.dart';
 import '../widgets/app_drawer.dart';
+import '../widgets/guachinche_card.dart';
 
 class CrudScreen extends StatefulWidget {
   const CrudScreen({super.key});
@@ -19,28 +21,130 @@ class _CrudScreenState extends State<CrudScreen> {
   final _islaController = TextEditingController();
   final _especialidadController = TextEditingController();
 
-  // Función para mostrar el modal de añadir guachinche
+  // Variable para la categoría seleccionada por defecto
+  String _categoriaSeleccionada = 'Tradicional';
+
   void _mostrarModalAgregar() {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Añadir Guachinche'),
+          backgroundColor: const Color(
+            0xFF1B3B1A,
+          ), // Fondo verde oscuro corporativo
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: const Text(
+            'Añadir Guachinche',
+            style: TextStyle(
+              color: Color(0xFFE6D7C3),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Campo Nombre
                 TextField(
                   controller: _nombreController,
-                  decoration: const InputDecoration(labelText: 'Nombre'),
+                  style: const TextStyle(color: Color(0xFFE6D7C3)),
+                  decoration: InputDecoration(
+                    labelText: 'Nombre',
+                    labelStyle: const TextStyle(color: Color(0xFFE6D7C3)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFFE6D7C3)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE6D7C3),
+                        width: 2,
+                      ),
+                    ),
+                  ),
                 ),
+                const SizedBox(height: 12),
+                // Campo Isla
                 TextField(
                   controller: _islaController,
-                  decoration: const InputDecoration(labelText: 'Isla (ej. Tenerife)'),
+                  style: const TextStyle(color: Color(0xFFE6D7C3)),
+                  decoration: InputDecoration(
+                    labelText: 'Isla (ej. Tenerife)',
+                    labelStyle: const TextStyle(color: Color(0xFFE6D7C3)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFFE6D7C3)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE6D7C3),
+                        width: 2,
+                      ),
+                    ),
+                  ),
                 ),
+                const SizedBox(height: 12),
+                // Campo Especialidad
                 TextField(
                   controller: _especialidadController,
-                  decoration: const InputDecoration(labelText: 'Especialidad (ej. Carne cabra)'),
+                  style: const TextStyle(color: Color(0xFFE6D7C3)),
+                  decoration: InputDecoration(
+                    labelText: 'Especialidad (ej. Carne cabra)',
+                    labelStyle: const TextStyle(color: Color(0xFFE6D7C3)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFFE6D7C3)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE6D7C3),
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                // Selector de Categoría corregido para evitar el error de nulos
+                DropdownButtonFormField<String?>(
+                  value: _categoriaSeleccionada,
+                  dropdownColor: const Color(0xFF1B3B1A),
+                  style: const TextStyle(color: Color(0xFFE6D7C3)),
+                  items: ['Tradicional', 'Parrilla', 'Vino Propio'].map((cat) {
+                    return DropdownMenuItem<String>(
+                      value: cat,
+                      child: Text(
+                        cat,
+                        style: const TextStyle(color: Color(0xFFE6D7C3)),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (val) {
+                    setState(() {
+                      _categoriaSeleccionada =
+                          val ??
+                          'Tradicional'; // Si viene null, asigna por defecto
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Categoría',
+                    labelStyle: const TextStyle(color: Color(0xFFE6D7C3)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Color(0xFFE6D7C3)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE6D7C3),
+                        width: 2,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -48,12 +152,16 @@ class _CrudScreenState extends State<CrudScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: Color(0xFFE6D7C3)),
+              ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF1B3B1A),
-                foregroundColor: Colors.white,
+                foregroundColor: const Color(0xFFE6D7C3),
+                side: const BorderSide(color: Color(0xFFE6D7C3)),
               ),
               onPressed: () {
                 if (_nombreController.text.isNotEmpty) {
@@ -64,6 +172,7 @@ class _CrudScreenState extends State<CrudScreen> {
                         nombre: _nombreController.text,
                         isla: _islaController.text,
                         especialidad: _especialidadController.text,
+                        categoria: _categoriaSeleccionada, // <--- ¡AQUÍ ESTÁ LA CATEGORÍA AÑADIDA!
                       ),
                     );
                   });
@@ -73,7 +182,10 @@ class _CrudScreenState extends State<CrudScreen> {
                   Navigator.pop(context);
                 }
               },
-              child: const Text('Guardar'),
+              child: const Text(
+                'Guardar',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         );
@@ -88,7 +200,9 @@ class _CrudScreenState extends State<CrudScreen> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Borrar todo'),
-          content: const Text('¿Estás seguro de que quieres eliminar todos los guachinches?'),
+          content: const Text(
+            '¿Estás seguro de que quieres eliminar todos los guachinches?',
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -102,7 +216,10 @@ class _CrudScreenState extends State<CrudScreen> {
                 });
                 Navigator.pop(context);
               },
-              child: const Text('Sí, borrar todo', style: TextStyle(color: Color(0xFFE6D7C3))),
+              child: const Text(
+                'Sí, borrar todo',
+                style: TextStyle(color: Color(0xFFE6D7C3)),
+              ),
             ),
           ],
         );
@@ -132,7 +249,11 @@ class _CrudScreenState extends State<CrudScreen> {
               children: [
                 Text(
                   'Total guachinches: ${_guachinches.length}',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFFE6D7C3)),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFE6D7C3),
+                  ),
                 ),
                 _guachinches.isEmpty
                     ? const SizedBox.shrink()
@@ -162,33 +283,13 @@ class _CrudScreenState extends State<CrudScreen> {
                     itemCount: _guachinches.length,
                     itemBuilder: (context, index) {
                       final guachinche = _guachinches[index];
-                      return Card(
-                        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        child: ListTile(
-                          leading: Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF1B3B1A).withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Icon(Icons.restaurant, color: Color(0xFF1B3B1A)),
-                          ),
-                          title: Text(
-                            guachinche.nombre,
-                            style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFE6D7C3)),
-                          ),
-                          subtitle: Text('Isla: ${guachinche.isla}\nEspecialidad: ${guachinche.especialidad}'),
-                          isThreeLine: true,
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              setState(() {
-                                _guachinches.removeAt(index);
-                              });
-                            },
-                          ),
-                        ),
+                      return GuachincheCard(
+                        guachinche: guachinche,
+                        onDelete: () {
+                          setState(() {
+                            _guachinches.removeAt(index);
+                          });
+                        },
                       );
                     },
                   ),
@@ -203,8 +304,10 @@ class _CrudScreenState extends State<CrudScreen> {
         icon: const Icon(Icons.add),
         label: const Text(
           'Añadir Guachinche',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFE6D7C3)),
-        
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFE6D7C3),
+          ),
         ),
       ),
     );
