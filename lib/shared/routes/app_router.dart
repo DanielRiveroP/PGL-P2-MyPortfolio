@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../screens/welcome_screen.dart';
 import '../../screens/portfolio_screen.dart';
+import '../../screens/crud_screen.dart';
 
 
 final GoRouter appRouter = GoRouter(
@@ -17,6 +18,11 @@ final GoRouter appRouter = GoRouter(
       path: '/portfolio',
       name: 'portfolio',
       builder: (context, state) => const PortfolioScreen(),
+    ),
+    GoRoute(
+      path: '/crud',
+      name: 'crud',
+      builder: (context, state) => const CrudScreen(),
     ),
   ],
 );
