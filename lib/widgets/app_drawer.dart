@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../services/auth_services.dart';
 
 class AppDrawer extends StatelessWidget {
+  static final AuthService _authService = AuthService();
+
   const AppDrawer({super.key});
 
   @override
@@ -39,17 +42,14 @@ class AppDrawer extends StatelessWidget {
                       SizedBox(height: 2),
                       Text(
                         'Mi Cuenta',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 14,
-                        ),
+                        style: TextStyle(color: Colors.white70, fontSize: 14),
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            
+
             const Divider(color: Colors.white24, height: 1),
             const SizedBox(height: 10),
 
@@ -61,7 +61,7 @@ class AppDrawer extends StatelessWidget {
               isSelected: currentPath == '/',
               onTap: () {
                 Navigator.pop(context); // Cierra el drawer
-                context.go('/');        // Ruta de bienvenida (si la tienes)
+                context.go('/'); // Ruta de bienvenida (si la tienes)
               },
             ),
             _buildDrawerItem(
@@ -79,7 +79,9 @@ class AppDrawer extends StatelessWidget {
             _buildDrawerItem(
               icon: Icons.description,
               title: 'Portfolio',
-              isSelected: currentPath == '/portfolio', // Se marca si estamos en portfolio
+              isSelected:
+                  currentPath ==
+                  '/portfolio', // Se marca si estamos en portfolio
               onTap: () {
                 Navigator.pop(context);
                 context.go('/portfolio'); // Navega al portfolio
@@ -97,25 +99,25 @@ class AppDrawer extends StatelessWidget {
               isSelected: currentPath == '/crud', // O la ruta que configures
               onTap: () {
                 Navigator.pop(context); // Cierra el menú
-                context.go('/crud');    // Navega a la pantalla CRUD (si usas go_router)
+                context.go(
+                  '/crud',
+                ); // Navega a la pantalla CRUD (si usas go_router)
               },
             ),
 
             const Spacer(), // Empuja el contenido restante hacia abajo
-
             // 3. BOTÓN DE CERRAR SESIÓN ABAJO
             Padding(
               padding: const EdgeInsets.only(bottom: 24.0),
               child: TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
+                onPressed: () async {
+                  await _authService.cerrarSesion();
+                  if (!context.mounted) return;
+                  context.go('/login');
                 },
                 child: const Text(
                   'Cerrar Sesión',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 15,
-                  ),
+                  style: TextStyle(color: Colors.white70, fontSize: 15),
                 ),
               ),
             ),
@@ -149,9 +151,7 @@ class AppDrawer extends StatelessWidget {
           ),
         ),
         onTap: onTap,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
     );
   }
