@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
 
   final AuthService _authService = AuthService();
+  bool _cargando = false;
 
   @override
   void initState() {
@@ -35,8 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
       context.go('/');
     }
   }
-
-  bool _cargando = false;
 
   @override
   void dispose() {
@@ -78,16 +77,16 @@ class _LoginScreenState extends State<LoginScreen> {
     final password = _passwordController.text;
 
     try {
-      // TODO: Llamada a la API de login con `email` y `password`,
-      // guardar token de forma segura y redirigir a bienvenida/inicio.
-      await Future.delayed(const Duration(milliseconds: 500));
+      final resultado = await _authService.loginConMensaje(email, password);
 
       if (!mounted) return;
       await _mostrarAlerta(
-        titulo: 'Inicio de sesión',
-        mensaje: 'Respuesta para $email (pendiente conectar servicio HTTP).',
+        titulo: resultado.ok ? 'Inicio de sesión' : 'Error al iniciar sesión',
+        mensaje: resultado.mensaje,
         onAceptar: () {
-          // Cuando tengas el token válido, redirigirás a la pantalla de bienvenida
+          if (resultado.ok) {
+            context.go('/');
+          }
         },
       );
     } catch (e) {

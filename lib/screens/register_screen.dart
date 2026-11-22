@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../services/auth_services.dart';
 import '../widgets/alerta_registro.dart';
 import '../widgets/formulario_registro.dart';
 
@@ -19,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  final AuthService _authService = AuthService();
   bool _cargando = false;
 
   @override
@@ -63,16 +65,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final password = _passwordController.text;
 
     try {
-      // TODO: Llamada a la API de registro con `nombre`, `email` y `password`.
-      // Si el registro es exitoso, mostrar alerta y redirigir a la pantalla de login.
-      await Future.delayed(const Duration(milliseconds: 500));
+      final resultado = await _authService.registrarConMensaje(
+        nombre: nombre,
+        email: email,
+        password: password,
+      );
 
       if (!mounted) return;
       await _mostrarAlerta(
-        titulo: 'Registro exitoso',
-        mensaje: 'Usuario $nombre ($email) registrado correctamente.',
+        titulo: resultado.ok ? 'Registro exitoso' : 'Error en el registro',
+        mensaje: resultado.mensaje,
         onAceptar: () {
-          context.go('/login');
+          if (resultado.ok) {
+            context.go('/login');
+          }
         },
       );
     } catch (e) {
